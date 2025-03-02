@@ -1,9 +1,11 @@
-import requests, os 
+import requests, os
 from requests.exceptions import Timeout
+
 if os.name == 'posix':
     os.system('clear')
 else:
     os.system('cls')
+
 file_name = input("LIST URL [.txt] : ")
 with open(file_name, 'r') as file:
     urls = file.readlines()
@@ -22,18 +24,19 @@ for url in urls:
                 a = '\n' + url + green + ' [ HAS COOKIES ] - ' + white + str(response.status_code)
                 print(a)
                 loc = 'hascookies.txt'
-                with open(loc, 'a') as file:  # Menggunakan mode 'a' untuk menambahkan ke file
+                with open(loc, 'a') as file:
                     file.write(str(a) + '\n')
                 for cookie in cookies:
-                    print('\ncookie name:'+'\n'+cookie.name, ":", '\ncookie value:'+'\n'+cookie.value)
+                    print('\ncookie name:' + '\n' + cookie.name, ":", '\ncookie value:' + '\n' + cookie.value)
             else:
                 print('\n' + url + red + ' [ NO COOKIES ] - ' + white + str(response.status_code))
         else:
             print('\n' + url + red + ' [ ERROR ] - ' + white + str(response.status_code))
     except Timeout:
         print('\n' + url + red + ' [ TIMEOUT ] - ' + white + 'Connection timed out')
-        continue  # Lanjut ke URL berikutnya jika terjadi timeout
-    except:
-        print('\n' + url + red + ' [ ERROR ] - ' + white + str(response.status_code))
         continue
+    except Exception as e:
+        print('\n' + url + red + ' [ ERROR ] - ' + white + str(e))
+        continue
+
 print('done')
